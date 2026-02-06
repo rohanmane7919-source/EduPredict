@@ -17,7 +17,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-st.success("Tushar Mulla")
+st.success("Tushar Mulla's")
 st.title("🎓 EduPredict")
 st.markdown(
     "<p style='font-size:18px;color:#555;'>AI-powered student performance prediction dashboard</p>",
