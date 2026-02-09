@@ -1,209 +1,115 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import joblib
-import json
 
 st.set_page_config(page_title="EduPredict", page_icon="🎓", layout="wide")
 
-model = joblib.load("Gradient-Boosting.pkl")
+st.markdown(
+    """
+    <style>
+    .main {background-color: #f9fbff;}
+    div[data-testid="stMetric"] {
+        background-color: #eef4ff;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-def predict(data):
-    input_data = [[
-        data["Hours_Studied"],
-        data["Attendance"],
-        data["Access_to_Resources"],
-        data["Extracurricular_Activities"],
-        data["Sleep_Hours"],
-        data["Previous_Scores"],
-        data["Internet_Access"],
-        data["Tutoring_Sessions"],
-        data["Family_Income"],
-        data["Teacher_Quality"],
-        data["School_Type"],
-        data["Peer_Influence"],
-        data["Physical_Activity"],
-        data["Learning_Disabilities"],
-        data["Parental_Education_Level"],
-        data["Distance_from_Home"],
-        data["Gender"]
-    ]]
-    return float(model.predict(input_data)[0])
+st.title("🎓 EduPredict")
+st.markdown(
+    "<p style='font-size:18px;color:#555;'>AI-powered student performance prediction dashboard</p>",
+    unsafe_allow_html=True
+)
 
-if "prediction" not in st.session_state:
-    st.session_state.prediction = None
+st.markdown("### 📘 Student Information")
 
-html = f"""
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-body {{
-    font-family: Arial;
-    background: #f9fbff;
-}}
-.container {{
-    max-width: 900px;
-    margin: auto;
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-}}
-.grid {{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}}
-.card {{
-    background: #eef4ff;
-    padding: 20px;
-    border-radius: 12px;
-}}
-button {{
-    width: 100%;
-    padding: 15px;
-    font-size: 16px;
-    background: #2b5cff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}}
-input, select {{
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-}}
-.result {{
-    margin-top: 30px;
-    text-align: center;
-    font-size: 36px;
-    font-weight: bold;
-    color: #2b5cff;
-}}
-</style>
-</head>
-<body>
-<div class="container">
-<h1>🎓 EduPredict</h1>
+col1, col2, col3 = st.columns(3)
 
-<div class="grid">
-<div class="card">
-<label>Hours Studied</label>
-<input id="Hours_Studied" type="number" value="6">
-<label>Attendance</label>
-<input id="Attendance" type="number" value="75">
-<label>Sleep Hours</label>
-<input id="Sleep_Hours" type="number" value="6">
-<label>Previous Scores</label>
-<input id="Previous_Scores" type="number" value="75">
-</div>
+with col1:
+    st.markdown("#### 🕒 Study & Attendance")
+    Hours_Studied = st.slider("Hours Studied (per day)", 0, 12, 6)
+    Attendance = st.slider("Attendance (%)", 0, 100, 75)
+    Access_to_Resources = st.selectbox("Access to Resources", ["High", "Medium", "Low"])
+    Family_Income = st.selectbox("Family Income", ["High", "Medium", "Low"])
+    Teacher_Quality = st.selectbox("Teacher Quality", ["High", "Medium", "Low"])
+    School_Type = st.selectbox("School Type", ["Public", "Private"])
 
-<div class="card">
-<label>Access to Resources</label>
-<select id="Access_to_Resources">
-<option value="2">High</option>
-<option value="1">Medium</option>
-<option value="0">Low</option>
-</select>
-<label>Extracurricular</label>
-<select id="Extracurricular_Activities">
-<option value="1">Yes</option>
-<option value="0">No</option>
-</select>
-<label>Internet Access</label>
-<select id="Internet_Access">
-<option value="1">Yes</option>
-<option value="0">No</option>
-</select>
-<label>Peer Influence</label>
-<select id="Peer_Influence">
-<option value="2">Positive</option>
-<option value="1">Neutral</option>
-<option value="0">Negative</option>
-</select>
-</div>
+with col2:
+    st.markdown("#### 🧠 Lifestyle & Activities")
+    Extracurricular_Activities = st.selectbox("Extracurricular Activities", ["Yes", "No"])
+    Sleep_Hours = st.slider("Sleep Hours", 0, 12, 6)
+    Previous_Scores = st.slider("Previous Scores", 0, 100, 75)
+    Peer_Influence = st.selectbox("Peer Influence", ["Positive", "Neutral", "Negative"])
+    Physical_Activity = st.slider("Physical Activity (hrs/week)", 0, 20, 5)
+    Learning_Disabilities = st.selectbox("Learning Disabilities", ["No", "Yes"])
 
-<div class="card">
-<label>Family Income</label>
-<select id="Family_Income">
-<option value="2">High</option>
-<option value="1">Medium</option>
-<option value="0">Low</option>
-</select>
-<label>Teacher Quality</label>
-<select id="Teacher_Quality">
-<option value="2">High</option>
-<option value="1">Medium</option>
-<option value="0">Low</option>
-</select>
-<label>School Type</label>
-<select id="School_Type">
-<option value="1">Private</option>
-<option value="0">Public</option>
-</select>
-<label>Gender</label>
-<select id="Gender">
-<option value="0">Male</option>
-<option value="1">Female</option>
-</select>
-</div>
-</div>
+with col3:
+    st.markdown("#### 🏠 Background")
+    Internet_Access = st.selectbox("Internet Access", ["Yes", "No"])
+    Tutoring_Sessions = st.slider("Tutoring Sessions (per month)", 0, 20, 5)
+    Parental_Education_Level = st.selectbox(
+        "Parental Education Level",
+        ["High School", "College", "Postgraduate"]
+    )
+    Distance_from_Home = st.selectbox("Distance from Home", ["Near", "Moderate", "Far"])
+    Gender = st.selectbox("Gender", ["Male", "Female"])
 
-<br>
-<button onclick="send()">Predict Exam Score</button>
-<div class="result" id="result"></div>
-</div>
+CATEGORY_MAP = {
+    "Access_to_Resources": {"Low": 0, "Medium": 1, "High": 2},
+    "Family_Income": {"Low": 0, "Medium": 1, "High": 2},
+    "Teacher_Quality": {"Low": 0, "Medium": 1, "High": 2},
+    "School_Type": {"Public": 0, "Private": 1},
+    "Extracurricular_Activities": {"No": 0, "Yes": 1},
+    "Peer_Influence": {"Negative": 0, "Neutral": 1, "Positive": 2},
+    "Learning_Disabilities": {"No": 0, "Yes": 1},
+    "Internet_Access": {"No": 0, "Yes": 1},
+    "Parental_Education_Level": {"High School": 0, "College": 1, "Postgraduate": 2},
+    "Distance_from_Home": {"Near": 0, "Moderate": 1, "Far": 2},
+    "Gender": {"Male": 0, "Female": 1}
+}
 
-<script>
-function send() {{
-    const data = {{
-        Hours_Studied: Number(document.getElementById("Hours_Studied").value),
-        Attendance: Number(document.getElementById("Attendance").value),
-        Access_to_Resources: Number(document.getElementById("Access_to_Resources").value),
-        Extracurricular_Activities: Number(document.getElementById("Extracurricular_Activities").value),
-        Sleep_Hours: Number(document.getElementById("Sleep_Hours").value),
-        Previous_Scores: Number(document.getElementById("Previous_Scores").value),
-        Internet_Access: Number(document.getElementById("Internet_Access").value),
-        Tutoring_Sessions: 5,
-        Family_Income: Number(document.getElementById("Family_Income").value),
-        Teacher_Quality: Number(document.getElementById("Teacher_Quality").value),
-        School_Type: Number(document.getElementById("School_Type").value),
-        Peer_Influence: Number(document.getElementById("Peer_Influence").value),
-        Physical_Activity: 5,
-        Learning_Disabilities: 0,
-        Parental_Education_Level: 1,
-        Distance_from_Home: 1,
-        Gender: Number(document.getElementById("Gender").value)
-    }};
-    window.parent.postMessage(data, "*");
-}}
-</script>
-</body>
-</html>
-"""
+Access_to_Resources = CATEGORY_MAP["Access_to_Resources"][Access_to_Resources]
+Family_Income = CATEGORY_MAP["Family_Income"][Family_Income]
+Teacher_Quality = CATEGORY_MAP["Teacher_Quality"][Teacher_Quality]
+School_Type = CATEGORY_MAP["School_Type"][School_Type]
+Extracurricular_Activities = CATEGORY_MAP["Extracurricular_Activities"][Extracurricular_Activities]
+Peer_Influence = CATEGORY_MAP["Peer_Influence"][Peer_Influence]
+Learning_Disabilities = CATEGORY_MAP["Learning_Disabilities"][Learning_Disabilities]
+Internet_Access = CATEGORY_MAP["Internet_Access"][Internet_Access]
+Parental_Education_Level = CATEGORY_MAP["Parental_Education_Level"][Parental_Education_Level]
+Distance_from_Home = CATEGORY_MAP["Distance_from_Home"][Distance_from_Home]
+Gender = CATEGORY_MAP["Gender"][Gender]
 
-components.html(html, height=900)
+input_data = [[
+    Hours_Studied,
+    Attendance,
+    Access_to_Resources,
+    Extracurricular_Activities,
+    Sleep_Hours,
+    Previous_Scores,
+    Internet_Access,
+    Tutoring_Sessions,
+    Family_Income,
+    Teacher_Quality,
+    School_Type,
+    Peer_Influence,
+    Physical_Activity,
+    Learning_Disabilities,
+    Parental_Education_Level,
+    Distance_from_Home,
+    Gender
+]]
 
-event = st.experimental_get_query_params()
+model = joblib.load("Gradient-Boosting")
 
-if st.session_state.get("incoming"):
-    st.session_state.prediction = predict(st.session_state.incoming)
+st.markdown("---")
 
-def handle_message():
-    if st.session_state.get("incoming"):
-        st.session_state.prediction = predict(st.session_state.incoming)
+colA, colB, colC = st.columns([1, 2, 1])
 
-if st.session_state.prediction is not None:
-    st.success(f"Predicted Exam Score: {st.session_state.prediction:.2f}%")
-
-st.markdown("""
-<script>
-window.addEventListener("message", (event) => {
-    fetch("/_stcore/handle", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(event.data)
-    });
-});
-</script>
-""", unsafe_allow_html=True)
+with colB:
+    if st.button("🚀 Predict Exam Score", use_container_width=True):
+        pred = model.predict(input_data)
+        st.metric("📊 Predicted Exam Score", f"{pred[0]:.2f} %")
