@@ -6,12 +6,22 @@ st.set_page_config(page_title="EduPredict", page_icon="🎓", layout="wide")
 st.markdown(
     """
     <style>
-    .main {background-color: #f9fbff;}
-    div[data-testid="stMetric"] {
-        background-color: #eef4ff;
-        padding: 25px;
-        border-radius: 12px;
-        text-align: center;
+    .css-18e3th9 { 
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+        padding-left: 0rem;
+        padding-right: 0rem;
+        margin: 0;
+    }
+    body {
+       background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+        background-attachment: fixed;
+        margin: 0;
+        height: 100vh;
+        width: 100%;
+    }
+    .stApp, .css-1d391kg {
+        background-color: transparent;
     }
     </style>
     """,
@@ -32,6 +42,18 @@ with col1:
     st.markdown("#### 🕒 Study & Attendance")
     Hours_Studied = st.slider("Hours Studied (per day)", 0, 12, 6)
     Attendance = st.slider("Attendance (%)", 0, 100, 75)
+    
+    st.markdown("""
+    <style>
+    div[data-testid="stSelectbox"] > div {
+        background-color: #ffffff;
+        border: 2px solid #764ba2;
+        border-radius: 10px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+
     Access_to_Resources = st.selectbox("Access to Resources", ["High", "Medium", "Low"])
     Family_Income = st.selectbox("Family Income", ["High", "Medium", "Low"])
     Teacher_Quality = st.selectbox("Teacher Quality", ["High", "Medium", "Low"])
