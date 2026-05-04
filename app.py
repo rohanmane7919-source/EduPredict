@@ -134,4 +134,5 @@ colA, colB, colC = st.columns([1, 2, 1])
 with colB:
     if st.button("🚀 Predict Exam Score", use_container_width=True):
         pred = model.predict(input_data)
-        st.metric("📊 Predicted Exam Score", f"{pred[0]:.2f} %")
+        final_pred = pred[0] + 25git 
+        st.metric("📊 Predicted Exam Score", f"{final_pred:.2f} %")
